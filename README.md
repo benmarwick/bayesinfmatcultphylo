@@ -3,25 +3,46 @@
 
 # bayesinfmatcultphylo
 
-[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh///master?urlpath=rstudio)
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/benmarwick/bayesinfmatcultphylo/master?urlpath=rstudio)
 
 This repository contains the data and code for our paper:
 
-> Authors, (YYYY). *Title of your paper goes here*. Name of journal/book
+> Ben Marwick
+> [![](https://orcid.org/sites/default/files/images/orcid_16x16.png)](https://orcid.org/0000-0001-7879-4531),
+> David N. Matzig
+> [![](https://orcid.org/sites/default/files/images/orcid_16x16.png)](https://orcid.org/0000-0001-7349-5401)
+> , Felix Riede
+> [![](https://orcid.org/sites/default/files/images/orcid_16x16.png)](https://orcid.org/0000-0002-4879-7157),
+> (2023). *Bayesian inference of material culture phylogenies using
+> continuous traits from the archaeological record*.
 > <https://doi.org/xxx/xxx>
 
 Our pre-print is online here:
 
-> Authors, (YYYY). *Title of your paper goes here*. Name of
-> journal/book, Accessed 12 Jun 2023. Online at
+> Ben Marwick
+> [![](https://orcid.org/sites/default/files/images/orcid_16x16.png)](https://orcid.org/0000-0001-7879-4531),
+> David N. Matzig
+> [![](https://orcid.org/sites/default/files/images/orcid_16x16.png)](https://orcid.org/0000-0001-7349-5401)
+> , Felix Riede
+> [![](https://orcid.org/sites/default/files/images/orcid_16x16.png)](https://orcid.org/0000-0002-4879-7157),
+> (2023). *Bayesian inference of material culture phylogenies using
+> continuous traits from the archaeological record*. Name of
+> journal/book, Accessed 29 Jun 2023. Online at
 > <https://doi.org/xxx/xxx>
 
 ### How to cite
 
 Please cite this compendium as:
 
-> Authors, (2023). *Compendium of R code and data for Title of your
-> paper goes here*. Accessed 12 Jun 2023. Online at
+> Ben Marwick
+> [![](https://orcid.org/sites/default/files/images/orcid_16x16.png)](https://orcid.org/0000-0001-7879-4531),
+> David N. Matzig
+> [![](https://orcid.org/sites/default/files/images/orcid_16x16.png)](https://orcid.org/0000-0001-7349-5401)
+> , Felix Riede
+> [![](https://orcid.org/sites/default/files/images/orcid_16x16.png)](https://orcid.org/0000-0002-4879-7157),
+> (2023). *Compendium of R code and data for Bayesian inference of
+> material culture phylogenies using continuous traits from the
+> archaeological record*. Accessed 29 Jun 2023. Online at
 > <https://doi.org/xxx/xxx>
 
 ## Contents
@@ -51,11 +72,11 @@ Desktop](https://rstudio.com/products/rstudio/download/).
 
 You can download the compendium as a zip from from this URL:
 [master.zip](/archive/master.zip). After unzipping: - open the `.Rproj`
-file in RStudio - run `devtools::install()` to ensure you have the
-packages this analysis depends on (also listed in the
-[DESCRIPTION](/DESCRIPTION) file). - finally, open
-`analysis/paper/paper.Rmd` and knit to produce the `paper.docx`, or run
-`rmarkdown::render("analysis/paper/paper.qmd")` in the R console
+file in RStudio - run `renv::restore` to ensure you have the packages
+this analysis depends on (also listed in the [DESCRIPTION](/DESCRIPTION)
+file). - finally, open `analysis/paper/paper.qmd` and render to produce
+the `paper.docx`, or run
+`quarto::quarto_render("analysis/paper/paper.qmd")` in the R console
 
 ### Licenses
 
