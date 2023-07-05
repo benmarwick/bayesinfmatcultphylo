@@ -1,10 +1,11 @@
 
+bilbiometrics_figure_fn <- function(biblio_data_file){
 
 library(tidyverse)
 library(lubridate)
 
 arch_phylo_papers <-
-  readxl::read_excel(here::here("analysis/data/raw_data/Archaeology phylogenetics case studies.xlsx"))
+  readxl::read_excel(biblio_data_file)
 
 # papers per year
 phylo_papers_per_year_plot <-
@@ -120,3 +121,4 @@ plot_grid(phylo_papers_methods_plot ,
 ggsave(here::here("analysis/figures/fig-bibliometrics.png"),
        h = 8,
        w = 10)
+}

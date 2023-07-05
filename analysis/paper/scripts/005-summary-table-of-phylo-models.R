@@ -1,13 +1,16 @@
+
+make_summary_table_of_models_fn <- function(){
 # Here we summarise the phylogenetic models we explored
 
-library(tibble)
+library(tidyverse)
 
 model_summary_tbl <-
-  tribble(~"Model", ~"Tree",         ~"Subsitution",              ~"Clock",
-          1,        "Pure birth",     "Brownian motion",            "Strict",
-          2,        "Birth-death",    "Brownian motion",            "Strict",
-          3,        "Birth-death",    "Brownian motion",           "Relaxed",
-          4,        "Birth-death",    "Relaxed Brownian motion",   "Relaxed")
+  tribble(~"Model", ~"Tree",         ~"Subsitution",                           ~"Clock",
+          1,        "Pure birth",     "Brownian motion",                         "Strict",
+          2,        "Birth-death",    "Brownian motion",                         "Strict",
+          3,        "Birth-death",    "Brownian motion",                        "Relaxed",
+          4,        "Birth-death",    "Relaxed Brownian motion",                "Relaxed",
+          5,        "Birth-death",    "Multivariate relaxed Brownian motion",   "Relaxed")
 
 
 psm_files <- fs::dir_ls(here::here(),
@@ -27,8 +30,8 @@ ssm_num <-
   parse_number()
 
 # Bayes factor is ratio of marginal likelihoods of the two models.
+# higher means more certain
 BF <- round(ssm_num[1] / ssm_num, 2)
-
 
 model_summary_tbl_nums <-
 model_summary_tbl %>%
@@ -36,3 +39,4 @@ model_summary_tbl %>%
 
 write_csv(model_summary_tbl_nums,
           here::here("analysis/data/derived_data/model_summary_tbl_nums.csv"))
+}

@@ -4,3 +4,9 @@
 .httr-oauth
 .DS_Store
 .quarto
+/anaysis/data/derived_data/output-01/*/
+/anaysis/data/derived_data/output-02/*/
+/anaysis/data/derived_data/output-03/*/
+/anaysis/data/derived_data/output-04/*/
+/anaysis/data/derived_data/output-05/*/
+/

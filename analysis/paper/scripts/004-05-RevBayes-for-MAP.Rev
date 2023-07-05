@@ -1,0 +1,235 @@
+#----------------------------------------------------------------
+# This is RevBayes code, not R, and needs to be run in the terminal
+
+# This code file was downloaded and modified from:
+# Parins-Fukuchi, Caroline (2017), Data from: Use of continuous
+# traits can improve morphological phylogenetics, Dryad,
+# Dataset, https://doi.org/10.5061/dryad.40b70
+
+# The code is cited in this paper:
+# Caroline Parins-Fukuchi, Use of Continuous Traits Can Improve Morphological
+# Phylogenetics, Systematic Biology, Volume 67, Issue 2, March 2018,
+# Pages 328–339, https://doi.org/10.1093/sysbio/syx072
+
+## This is intended to be run on RevBayes v1.0.0
+# v1.0.1 has changed several function names. see RevBayes documentation for more details.
+# This procedure was developed with the gratuitous aid of RevBayes example documents
+# authored by Nicolas Lartillot, Michael Landis, and April Wright.
+
+# BM: I downloaded RevBayes onto my computer and put in in my Applications folder (OSX)
+# BM: we have:
+# - birth-death tree model
+# - relaxed multivariate Brownian motion Model
+# - relaxed clock model
+
+getwd() # confirm that we are in the project directory where are input/output files are
+
+# create file names:
+
+output_file <- "output-05"
+
+fl <- "analysis/data/derived_data/data_for_revbayes.nex"  # continuous character set used for analysis in nexus format
+outtr <- "analysis/data/derived_data/" + output_file + "/tree_trace.trees"   # file to write sampled trees
+outlf <- "analysis/data/derived_data/" + output_file + "/mcmc_log.txt"      # MCMC log
+outsm <- "analysis/data/derived_data/" + output_file + "/map_tree.nex"      # MAP summary tree file
+outmc <- "analysis/data/derived_data/" + output_file + "/mcc_tree.nex"      # MCC summary tree file
+outmd <- "analysis/data/derived_data/" + output_file + "/relaxed_BM.log"
+outnt <- "analysis/data/derived_data/" + output_file + "/relaxed_BM.trees"
+
+bm_basic_posterior_pp <- "analysis/data/derived_data/" + output_file + "/BM_basic_posterior_pp.log"
+BM_basic_powp <-         "analysis/data/derived_data/" + output_file + "/BM_basic_powp.out"
+pp_out <- "analysis/data/derived_data/" + output_file + "/pp_out"
+outssm <- "analysis/data/derived_data/" + output_file + "/ssm.csv"
+outpsm <- "analysis/data/derived_data/" + output_file + "/psm.csv"
+
+intree <- "analysis/data/derived_data/output-01/map_tree.nex"
+
+# import the data into RevBayes, watch terminal for message indicating success
+contData <- readContinuousCharacterData(fl)
+# the most relevant official tutorial is probably
+
+# We record the number of characters for future reference.
+nchar <- contData.nchar()
+numTips = contData.ntaxa()
+numNodes = numTips * 2 - 1
+names = contData.names()
+diversification ~ dnLognormal(1e-3,1) # aka 'birth rate' for new varients
+turnover = 0 # we are going to parameterise the BD prior,
+# 'The turnover rate is the rate at which one species is replaced by another
+# species due to a birth plus death event.... the turnover rate represent the
+# longevity of a species' details: https://revbayes.github.io/tutorials/divrate/simple.html
+speciation := diversification + turnover
+extinction := turnover
+sampling_fraction <- 1
+
+# instantiate a Birth-Death tree with the parameters set above
+psi ~ dnBDP(lambda=speciation, mu=extinction, rho=sampling_fraction, rootAge=1, samplingStrategy = "uniform", condition = "nTaxa", taxa=names)
+mvi = 0 # we are going to set tree rearrangement and node height scaling moves
+
+# create our node height and topological rearrangement MCMC moves. These help us to explore
+# the parameter space in each MCMC step. Good notes on these here:
+# http://www.peterbeerli.com/classes/images/5/5f/RB_CTMC_Tutorial_oct2015.pdf
+moves[++mvi] = mvSubtreeScale(psi, weight=5.0) # change the ages of the internal nodes
+moves[++mvi] = mvNodeTimeSlideUniform(psi, weight=10.0) # change the ages of the internal nodes
+moves[++mvi] = mvNNI(psi, weight=5.0)  # nearest-neighbor interchange move
+moves[++mvi] = mvFNPR(psi, weight=5.0) # a fixed-node height subtree-prune and regrafting move
+
+logSigma ~ dnNormal(0,1) # place a prior on BM sigma parameter.
+sigma := 10^logSigma
+moves[++mvi] = mvSlide(logSigma, delta=1.0, tune=true, weight=2.0)
+
+# For our MCMC analysis, we need to set up a vector of monitors to record
+# the states of our Markov chain.
+
+monitors[1] = mnScreen(printgen=200, sigma)
+monitors[2] = mnFile(filename=outlf, printgen=100, separator = TAB, sigma)
+monitors[3] = mnFile(filename=outtr, printgen=50,  separator = TAB, psi)
+monitors[4] = mnStochasticVariable(filename = pp_out + "/" + "pps_posterior.var",printgen=10)
+
+##------------------------------------------
+# from https://revbayes.github.io/tutorials/cont_traits/relaxed_bm.html
+
+trait <- 1
+tree <- readTrees(intree)[1]
+
+contData.excludeAll()
+contData.includeCharacter( trait )
+
+nbranches <- 2 * numTips - 2
+
+sigma ~ dnLoguniform(1e-5, 1e-1)
+moves[++mvi] =  mvScale(sigma, weight=1.0)
+
+expected_number_of_shifts <- 5
+rate_shift_probability    <- expected_number_of_shifts / nbranches
+
+sd = 0.578
+rate_shift_distribution = dnLognormal(0, sd)
+
+for(i in nbranches:1) {
+
+    # draw the rate multiplier from a mixture distribution
+    branch_rate_multiplier[i] ~ dnReversibleJumpMixture(constantValue=1, rate_shift_distribution, p=Probability(1 - rate_shift_probability) )
+
+    # compute the rate for the branch
+    if ( tree.isRoot( tree.parent(i) ) ) {
+       branch_rates[i] := sigma * branch_rate_multiplier[i]
+    } else {
+       branch_rates[i] := branch_rates[tree.parent(i)] * branch_rate_multiplier[i]
+    }
+
+    # keep track of whether the branch has a rate shift
+    branch_rate_shift[i] := ifelse( branch_rate_multiplier[i] == 1, 0, 1 )
+
+    # use reversible-jump to move between models with and without
+    # shifts on the branch
+    moves[++mvi] = mvRJSwitch(branch_rate_multiplier[i], weight=1)
+
+    # include proposals on the rate mutliplier (when it is not 1)
+    moves[++mvi] = mvScale(branch_rate_multiplier[i], weight=1)
+
+}
+
+num_rate_changes := sum( branch_rate_shift )
+
+monitors[4] =  mnModel(outmd, printgen=10)
+monitors[5] =  mnScreen(printgen=1000, sigma, num_rate_changes)
+monitors[6] =  mnExtNewick(filename=outnt, isNodeParameter=TRUE, printgen=10, separator=TAB, tree=tree, branch_rates)
+
+# Relative rates of evolution among characters
+# We draw proportional rates of evolution among characters from a symmetric Dirichlet distribution with concentration parameter α. We then multiply these proportional rates by the number of characters to get the relative rates. This ensures that the relative rates have a mean of 1. Increasing the value of α will decrease the amount of rate variation under the prior.
+
+alpha <- 1.0
+proportional_rates ~ dnDirichlet( rep(alpha, nchar) )
+relative_rates := proportional_rates * nchar
+
+# We apply an mvBetaSimplex move to the proportional rates.
+moves.append( mvBetaSimplex(proportional_rates, weight=2.0) )
+
+# Correlation matrix
+# We draw the correlation matrix from an LKJ prior distribution with concentration parameter
+# Larger values of eta correspond to less prior correlation among characters. This distribution draws a correlation matrix with nchar rows and columns.
+
+eta <- 1.0
+R ~ dnLKJ( eta, nchar )
+
+# We use special moves to update the correlation matrix. The first move, mvCorrelationMatrixRandomWalk, perturbs each element of the matrix by a small amount simultaneously. The second move, mvCorrelationMatrixSingleElementBeta, updates a randomly chosen element of the correlation matrix by drawing Beta random variable centered on the current correlation (stretched from -1 to 1).
+
+moves.append( mvCorrelationMatrixRandomWalk(R, weight=3.0) )
+moves.append( mvCorrelationMatrixSingleElementBeta(R, weight=5.0) )
+
+# We extract the elements in the upper triangle of the correlation matrix for reference. These parameters are the vector of pairwise correlation parameters, ρ in the upper triangular part of the matrix, in natural reading order (left to right, top to bottom).
+
+correlations := R.upperTriangle()
+
+# Variance-covariance matrix
+# Having specified the separate components, we assemble the variance-covariance matrix. Here, we provide the square-roots of the relative rates (i.e., the standard deviations) and the correlation matrix. We exclude the average rate, sigma2, because we may want to allow different branches of the phylogeny to have different rates.
+
+V := fnDecompVarCovar( relative_rates^0.5, R )
+
+## -----------------------------------------
+
+
+##########################
+# Specify the BM process #
+##########################
+
+
+# specify that we are going calculate BM likelihood using the REML PIC algorithm (see Felsenstein 1973)
+# several chapters on fitting BM models here: https://lukejharmon.github.io/pcm/chapters/
+traits ~ dnPhyloMultivariateBrownianREML(psi, branchRates=branch_rates^0.5, rateMatrix=V)
+
+# When this clamp function is called, RevBayes sets each of the stochastic
+# nodes representing the tips of the tree to the corresponding
+# nucleotide sequence in the alignment. This essentially
+# tells the program that we have observed data for the sequences at the tips.
+traits.clamp(contData) # match traits to tips
+
+# we wrap the entire model to provide convenient access to the DAG.
+# To do this, we only need to give the model() function a
+# single node. With this node, the model() function can find all of the other
+# nodes by following the arrows in the graphical model (see DOI:10.1093/sysbio/syw021
+# for details of the typical graphical model)
+bmv = model(sigma, logSigma, tree)     # link sigma param w/ BM model
+
+# With a fully specified model, a set of monitors, and a set of moves,
+# we can now set up the MCMC algorithm that will sample parameter values in
+# proportion to their posterior probability. The mcmc() function will
+# create our MCMC object:
+chain = mcmc(bmv, monitors, moves)
+chain.burnin(generations=500, tuningInterval=500) # originally 50000 and 500
+
+chain.run(500) # originally 500000
+# To summarize the trees sampled from the posterior distribution,
+# RevBayes can summarize the sampled trees by reading in the tree-trace file:
+treetrace = readTreeTrace(file = outnt)
+treefl <- outsm
+
+# The mapTree() function will summarize the tree samples and write the
+# maximum a posteriori tree to file, we can also summarise trees as MCC
+# (maximum clade credibility) representation
+map = mapTree( file=treefl, treetrace )
+mccTree( file=outmc, treetrace )
+
+# -----------------------------------------------------------------------
+# from https://revbayes.github.io/tutorials/model_selection_bayes_factors/bf_intro.html
+# this section does the Bayes Factor analysis
+
+### create a monitor to log the samples to file
+monitors[1] = mnModel(filename=bm_basic_posterior_pp,printgen=10, separator = TAB)
+
+### compute power posterior distributions
+pow_p = powerPosterior(bmv, moves, monitors, BM_basic_powp, cats=50, sampleFreq=10)
+pow_p.burnin(generations=500,tuningInterval=200) # originally 5000
+pow_p.run(generations=100) # originally 1000
+
+### use stepping-stone sampling to calculate marginal likelihoods
+ss = steppingStoneSampler(file=BM_basic_powp, powerColumnName="power", likelihoodColumnName="likelihood")
+write( ss.marginal(), filename =  outssm)
+
+### use path sampling to calculate marginal likelihoods
+ps = pathSampler(file=BM_basic_powp, powerColumnName="power", likelihoodColumnName="likelihood")
+write( ps.marginal(), filename = outpsm )
+
+
+q() # quits RevBayes

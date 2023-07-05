@@ -1,3 +1,20 @@
+
+
+prepare_arrowhead_data_for_input_to_revbayes_fn <- function(
+                                                            arrowhead_outlines,
+                                                            arrowhead_locations,
+                                                            arrowhead_typochronology
+                                                            ){
+
+
+# arrowhead_outlines =       here::here("analysis/data/raw_data/outlines_combined_nicholas_2016.RDS")
+#,
+# arrowhead_locations =      here::here("analysis/data/raw_data/nicolas_fleches_2016_catalog_ids_with_coordinates.csv")
+#,
+# arrowhead_typochronology = here::here("analysis/data/raw_data/nicolas_2017_typochronologie.csv")
+# ){
+
+
 # from https://github.com/yesdavid/designspace_culttax_article_2021/blob/main/2_script/3_code_late_neolithic_early_bronze_age.R
 # with minor modifications
 
@@ -26,7 +43,7 @@ if (!requireNamespace("ggtree", quietly = TRUE)){
 } else {library(ggtree)}
 
 
-outlines_combined_nicolas_2016 <- readRDS(here("analysis/data/raw_data/outlines_combined_nicholas_2016.RDS"))
+outlines_combined_nicolas_2016 <- readRDS(arrowhead_outlines)
 
 outlines_combined_nicolas_2016_centered <-
   Momocs::coo_centre(outlines_combined_nicolas_2016) # center
@@ -38,7 +55,7 @@ outlines_combined_nicolas_2016_centered_scaled <-
 
 # unification of outlines with catalogue-dataframe
 nicolas_fleches_2016_catalog_ids_coordinates <-
-  readr::read_csv(file = here("analysis/data/raw_data/nicolas_fleches_2016_catalog_ids_with_coordinates.csv"))
+  readr::read_csv(file = arrowhead_locations)
 
 outlines_combined_nicolas_2016_names <-
   names(outlines_combined_nicolas_2016_centered_scaled)
@@ -129,20 +146,27 @@ for (vector_index in 1:length(match(nicolas_outliers_cluster_outlier_names$name,
   outlines_combined_nicolas_2016_centered_scaled_PCA$fac$outlier_names[current_index] <- nicolas_outliers_cluster_outlier_names$name[vector_index]
 }
 
-
 # look at the shape of the outliers
+# BM: Momocs::slice doesn't work in a function, no idea why, so I use the more
+# primative function
+x1 <- nicolas_outliers_cluster_outlier_names$name
+x2 <- outlines_combined_nicolas_2016_centered_scaled_PCA$fac$ID_artefact
+idx_1 <- base::match(x1, x2)
+z <- 1+1
+
 nicolas_2016_with_outliers <-
-  Momocs::slice(outlines_combined_nicolas_2016_centered_scaled,
-                match(nicolas_outliers_cluster_outlier_names$name,
-                      outlines_combined_nicolas_2016_centered_scaled_PCA$fac$ID_artefact))
+  Momocs:::subsetize.Coo(outlines_combined_nicolas_2016_centered_scaled, idx_1 )
 
 # plot not shown here
 
 # analysis without outliers
+y1 <- nicolas_outliers_cluster_outlier_names$name
+y2 <- outlines_combined_nicolas_2016_centered_scaled_PCA$fac$ID_artefact
+idx_2 <- base::match(y1, y2)
+idx_2 <- (-idx_2)
+
 nicolas_2016_without_outliers <-
-  Momocs::slice(outlines_combined_nicolas_2016_centered_scaled,
-                -match(nicolas_outliers_cluster_outlier_names$name,
-                       outlines_combined_nicolas_2016_centered_scaled_PCA$fac$ID_artefact))
+  Momocs:::subsetize.Coo(outlines_combined_nicolas_2016_centered_scaled, idx_2 )
 
 
 # harmonic calibration
@@ -190,16 +214,14 @@ gg_nicolas <- gg_nicolas$gg +
 ggsave(here("analysis/figures/nicolas_arrowheads_pca_contrib.png"),
        h = 10, w = 8)
 
-
 # PCA plot not shown
 
-############################# NJ typochronology #############################
+############################# typochronology #############################
 
-typochronologie_csv <- readr::read_csv(here("analysis/data/raw_data/nicolas_2017_typochronologie.csv"))
+typochronologie_csv <- readr::read_csv(arrowhead_typochronology)
 
 typochronologie_csv <- dplyr::distinct(typochronologie_csv, ID_country, .keep_all = T)
 
-typochronologie_csv_UK <- subset(typochronologie_csv, Country == "UK")
 typochronologie_csv_FR <- subset(typochronologie_csv, Country == "FR")
 
 nicolas_2016_without_outliers_PCA_as_df <-
@@ -237,20 +259,61 @@ library(stringr)
 library(dplyr)
 library(tibble)
 
-data_for_revbayes <- nicolas_2016_without_outliers_PCA_as_df_subset_typochron_FR %>%
+names_artefacts_ID_and_period_clean <-
+  names_artefacts_ID_and_period %>%
+  mutate(old_artefact_ID = artefact_ID) %>%
+  mutate(artefact_ID = str_remove(artefact_ID, "_pseudo_no")) %>%
+  mutate(artefact_ID = str_remove_all(artefact_ID, "_XX")) %>%
+  tidyr::unite('country_and_period',
+               ID_country, Period,
+               sep = "_",
+               remove = FALSE) %>%
+  # taxa names must be first col for ggtree to work with %<+%
+  mutate(taxa = artefact_ID ) %>%
+  relocate(taxa) %>%
+  as_tibble %>%
+  # make the taxa strings equal length with some padding
+  mutate(taxa =
+   str_split_fixed(taxa, "_", 4) %>%
+   as_tibble() %>%
+   mutate(V3 = ifelse(nchar(V3) < 2,  paste0("0", V3), V3),
+          V4 = ifelse(nchar(V4) == 1, paste0("0", V4), V4),
+          V4 = ifelse(nchar(V4) == 2, V4, "00")) %>%
+   tidyr::unite(V1,  V2,  V3,  V4, sep = "_") %>%
+   pull(V1) %>%
+   paste0("FR_", .))
+
+# update the artefact IDs on the PCA row labels
+
+nicolas_2016_without_outliers_PCA_as_df_subset_typochron_FR_clean <-
+nicolas_2016_without_outliers_PCA_as_df_subset_typochron_FR %>%
+  rownames_to_column() %>%
+  left_join(names_artefacts_ID_and_period_clean,
+            join_by(rowname == old_artefact_ID)) %>%
+  mutate(period =
+           case_match(
+             Period,
+             "Bell Beaker" ~  "Bell-Beaker",
+             "Bronze A1 1" ~  "EBA-1",
+             "Bronze A2 2" ~  "EBA-2",
+             "Bronze A2 3" ~  "EBA-3",
+           ),
+         taxa = paste0(taxa, "_", period )) %>%
+  dplyr::select(-rowname,
+         -artefact_ID,
+         -country_and_period,
+         -ID_country,
+         -Period,
+         -period
+         ) %>%
+  column_to_rownames("taxa")
+
+
+data_for_revbayes <- nicolas_2016_without_outliers_PCA_as_df_subset_typochron_FR_clean %>%
   # only want columns that have PC values
   dplyr::select(starts_with("PC"))
 
-# shorten the sample names so the trees are easier to read
-row.names(data_for_revbayes) <-
-  str_remove(row.names(data_for_revbayes),
-             "_pseudo_no")
-
-row.names(data_for_revbayes) <-
-  str_remove_all(row.names(data_for_revbayes),
-                 "_XX")
-
-# write a nex file for input into RevBayes, just get a few PCs
+# write a nex file for input into RevBayes,
 write.nexus.data(as.matrix(data_for_revbayes),
                  file.path(here("analysis/data/derived_data/data_for_revbayes.nex")),
                  format = "continuous")
@@ -260,6 +323,8 @@ data_for_revbayes %>%
   as.data.frame() %>%
   rownames_to_column() %>%
   write_csv(here("analysis/data/derived_data/data_for_revbayes.csv"))
+
+}
 
 
 

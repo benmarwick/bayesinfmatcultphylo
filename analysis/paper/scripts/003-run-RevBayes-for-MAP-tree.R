@@ -5,14 +5,63 @@
 
 # Start a command with results displayed in a terminal buffer
 # do tree inference, make a file path to the script to execute
-termId1 <- rstudioapi::terminalExecute('/Applications/revbayes-v1.2.1/bin/rb "analysis/paper/scripts/004-01-RevBayes-for-MAP.Rev"')
-termId2 <- rstudioapi::terminalExecute('/Applications/revbayes-v1.2.1/bin/rb "analysis/paper/scripts/004-02-RevBayes-for-MAP.Rev"')
-termId3 <- rstudioapi::terminalExecute('/Applications/revbayes-v1.2.1/bin/rb "analysis/paper/scripts/004-03-RevBayes-for-MAP.Rev"')
-termId4 <- rstudioapi::terminalExecute('/Applications/revbayes-v1.2.1/bin/rb "analysis/paper/scripts/004-04-RevBayes-for-MAP.Rev"')
+run_revbayes_script_01_fn <- function(file,
+                                      data_for_revbayes) {
+  x <- data_for_revbayes
+  system(paste0("cd ",
+                here::here(), # change to project working directory
+                " && ",
+                "/Applications/revbayes-v1.2.1/bin/rb  ",
+                file # this is the .Rev file path we set in _targets.R
+                ))
+}
 
-# quit the terminal
-rstudioapi::terminalKill(termId1)
-rstudioapi::terminalKill(termId2)
-rstudioapi::terminalKill(termId3)
-rstudioapi::terminalKill(termId4)
+run_revbayes_script_02_fn <- function(file,
+                                      data_for_revbayes) {
+  x <- data_for_revbayes
+  system(paste0("cd ",
+                here::here(), # change to project working directory
+                " && ",
+                "/Applications/revbayes-v1.2.1/bin/rb  ",
+                file # this is the .Rev file path we set in _targets.R
+  ))
+}
+
+run_revbayes_script_03_fn <- function(file,
+                                      data_for_revbayes) {
+  x <- data_for_revbayes
+  system(paste0("cd ",
+                here::here(), # change to project working directory
+                " && ",
+                "/Applications/revbayes-v1.2.1/bin/rb  ",
+                file # this is the .Rev file path we set in _targets.R
+  ))
+}
+
+run_revbayes_script_04_fn <- function(file,
+                                      data_for_revbayes) {
+  x <- data_for_revbayes
+  system(paste0("cd ",
+                here::here(), # change to project working directory
+                " && ",
+                "/Applications/revbayes-v1.2.1/bin/rb  ",
+                file # this is the .Rev file path we set in _targets.R
+  ))
+}
+
+run_revbayes_script_05_fn <- function(file,
+                                      data_for_revbayes) {
+  x <- data_for_revbayes
+  system(paste0("cd ",
+                here::here(), # change to project working directory
+                " && ",
+                "/Applications/revbayes-v1.2.1/bin/rb  ",
+                file # this is the .Rev file path we set in _targets.R
+  ))
+}
+
+
+
+
+
 
