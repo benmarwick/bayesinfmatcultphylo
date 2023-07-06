@@ -26,7 +26,7 @@ getwd() # confirm that we are in the project directory where are input/output fi
 
 # create file names:
 
-output_file <- "output-03"
+output_file <- "output-003"
 
 fl <- "analysis/data/derived_data/data_for_revbayes.nex"  # continuous character set used for analysis in nexus format
 outtr <- "analysis/data/derived_data/" + output_file +  "/tree_trace.trees"   # file to write sampled trees
@@ -125,9 +125,9 @@ bmv = model(sigma, ucln_mean)     # link sigma param w/ BM model
 # proportion to their posterior probability. The mcmc() function will
 # create our MCMC object:
 chain = mcmc(bmv, monitors, moves)
-chain.burnin(generations=500, tuningInterval=500) # originally 50000 and 500
+chain.burnin(generations=50000, tuningInterval=500) # originally 50000 and 500
 
-chain.run(500) # originally 500000
+chain.run(500000) # originally 500000
 # To summarize the trees sampled from the posterior distribution,
 # RevBayes can summarize the sampled trees by reading in the tree-trace file:
 treetrace = readTreeTrace(file = outtr)
@@ -148,8 +148,8 @@ monitors[1] = mnModel(filename=bm_basic_posterior_pp,printgen=10, separator = TA
 
 ### compute power posterior distributions
 pow_p = powerPosterior(bmv, moves, monitors, BM_basic_powp, cats=50, sampleFreq=10)
-pow_p.burnin(generations=500,tuningInterval=200) # originally 5000
-pow_p.run(generations=100) # originally 1000
+pow_p.burnin(generations=5000,tuningInterval=200) # originally 5000
+pow_p.run(generations=1000) # originally 1000
 
 ### use stepping-stone sampling to calculate marginal likelihoods
 ss = steppingStoneSampler(file=BM_basic_powp, powerColumnName="power", likelihoodColumnName="likelihood")

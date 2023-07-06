@@ -26,7 +26,7 @@ getwd() # confirm that we are in the project directory where are input/output fi
 
 # create file names:
 
-output_file <- "output-01"
+output_file <- "output-001"
 
 fl <- "analysis/data/derived_data/data_for_revbayes.nex"  # continuous character set used for analysis in nexus format
 outtr <- "analysis/data/derived_data/" + output_file +   "/tree_trace.trees"  # file to write sampled trees
@@ -107,7 +107,7 @@ bmv = model(sigma)     # link sigma param w/ BM model
 chain = mcmc(bmv, monitors, moves)
 chain.burnin(generations=50000, tuningInterval=500) # originally 50000 and 500
 
-chain.run(50000) # originally 500000
+chain.run(500000) # originally 500000
 # To summarize the trees sampled from the posterior distribution,
 # RevBayes can summarize the sampled trees by reading in the tree-trace file:
 treetrace = readTreeTrace(file = outtr)

@@ -81,57 +81,57 @@ list(
   # run revbayes. We also have the Rev script files are targets to ensure
   # they are monitored and re-run when we change them
   tar_target(
-    name = revbayes_script_01,
-    command = here::here("analysis/paper/scripts/004-01-RevBayes-for-MAP.Rev"),
+    name = revbayes_script_001,
+    command = here::here("analysis/paper/scripts/004-001-RevBayes-for-MAP.Rev"),
     format = "file"
   ),
   tar_target(
-    name = run_revbayes_script_01,
-    command = run_revbayes_script_01_fn(revbayes_script_01,
+    name = run_revbayes_script_001,
+    command = run_revbayes_script_001_fn(revbayes_script_001,
                                         data_for_revbayes_nex
                                         )
   ),
   tar_target(
-    name = revbayes_script_02,
-    command = here::here("analysis/paper/scripts/004-02-RevBayes-for-MAP.Rev"),
+    name = revbayes_script_002,
+    command = here::here("analysis/paper/scripts/004-002-RevBayes-for-MAP.Rev"),
     format = "file"
   ),
   tar_target(
-    name = run_revbayes_script_02,
-    command = run_revbayes_script_02_fn(revbayes_script_02,
+    name = run_revbayes_script_002,
+    command = run_revbayes_script_002_fn(revbayes_script_002,
                                         data_for_revbayes_nex
     )
   ),
   tar_target(
-    name = revbayes_script_03,
-    command = here::here("analysis/paper/scripts/004-03-RevBayes-for-MAP.Rev"),
+    name = revbayes_script_003,
+    command = here::here("analysis/paper/scripts/004-003-RevBayes-for-MAP.Rev"),
     format = "file"
   ),
   tar_target(
-    name = run_revbayes_script_03,
-    command = run_revbayes_script_03_fn(revbayes_script_03,
+    name = run_revbayes_script_003,
+    command = run_revbayes_script_003_fn(revbayes_script_003,
                                         data_for_revbayes_nex
     )
   ),
   tar_target(
-    name = revbayes_script_04,
-    command = here::here("analysis/paper/scripts/004-04-RevBayes-for-MAP.Rev"),
+    name = revbayes_script_004,
+    command = here::here("analysis/paper/scripts/004-004-RevBayes-for-MAP.Rev"),
     format = "file"
   ),
   tar_target(
-    name = run_revbayes_script_04,
-    command = run_revbayes_script_04_fn(revbayes_script_04,
+    name = run_revbayes_script_004,
+    command = run_revbayes_script_004_fn(revbayes_script_004,
                                         data_for_revbayes_nex
     )
   ),
   tar_target(
-    name = revbayes_script_05,
-    command = here::here("analysis/paper/scripts/004-05-RevBayes-for-MAP.Rev"),
+    name = revbayes_script_005,
+    command = here::here("analysis/paper/scripts/004-005-RevBayes-for-MAP.Rev"),
     format = "file"
   ),
   tar_target(
-    name = run_revbayes_script_05,
-    command = run_revbayes_script_05_fn(revbayes_script_05,
+    name = run_revbayes_script_005,
+    command = run_revbayes_script_005_fn(revbayes_script_005,
                                         data_for_revbayes_nex
     )
   ),
@@ -140,12 +140,12 @@ list(
   # paper
   tar_target(
     name = map_tree_for_plotting,
-    command = here::here("analysis/data/derived_data/output-02/map_tree.nex"),
+    command = here::here("analysis/data/derived_data/output-002/map_tree.nex"),
     format = "file"
   ),
   tar_target(
     name = treespace_for_plotting,
-    command = here::here("analysis/data/derived_data/output-02/tree_trace.trees"),
+    command = here::here("analysis/data/derived_data/output-002/tree_trace.trees"),
     format = "file"
   ),
 
