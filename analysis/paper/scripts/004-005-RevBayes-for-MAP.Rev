@@ -197,9 +197,9 @@ bmv = model(sigma, logSigma, tree)     # link sigma param w/ BM model
 # proportion to their posterior probability. The mcmc() function will
 # create our MCMC object:
 chain = mcmc(bmv, monitors, moves)
-chain.burnin(generations=50000, tuningInterval=500) # originally 50000 and 500
+chain.burnin(generations=50, tuningInterval=5) # originally 50000 and 500
 
-chain.run(500000) # originally 500000
+chain.run(500) # originally 500000
 # To summarize the trees sampled from the posterior distribution,
 # RevBayes can summarize the sampled trees by reading in the tree-trace file:
 treetrace = readTreeTrace(file = outnt)
@@ -220,8 +220,8 @@ monitors[1] = mnModel(filename=bm_basic_posterior_pp,printgen=10, separator = TA
 
 ### compute power posterior distributions
 pow_p = powerPosterior(bmv, moves, monitors, BM_basic_powp, cats=50, sampleFreq=10)
-pow_p.burnin(generations=5000,tuningInterval=200) # originally 5000
-pow_p.run(generations=1000) # originally 1000
+pow_p.burnin(generations=500,tuningInterval=20) # originally 5000
+pow_p.run(generations=100) # originally 1000
 
 ### use stepping-stone sampling to calculate marginal likelihoods
 ss = steppingStoneSampler(file=BM_basic_powp, powerColumnName="power", likelihoodColumnName="likelihood")

@@ -20,15 +20,20 @@ library(ggtree)
 # for saving figures
 dpi <- 600
 
+# if we are not using targets, we can load the data here
+# map_tree_for_plotting = here::here("analysis/data/derived_data/output-002/map_tree.nex")
+# treespace_for_plotting = here::here("analysis/data/derived_data/output-002/tree_trace.trees")
+# data_for_revbayes_csv = here::here("analysis/data/derived_data/data_for_revbayes.csv")
+
 outsumfile <- ape::read.nexus(map_tree_for_plotting)
-data_for_revbayes <- read_csv(data_for_revbayes)
+data_for_revbayes <- read_csv(data_for_revbayes_csv)
 
 #-------------------------------------------------
 # Summary of treespace
 # read in the tree space
 phy_raw <- ape::read.tree(treespace_for_plotting)
 phy_raw <- di2multi(phy_raw, tol = 1e-08) # remove -ve branch lengths
-phy <- phy_raw[1:10] # small sample while exploring and polishing, because this is very slow
+phy <- phy_raw[1:1000] # small sample while exploring and polishing, because this is very slow
 
 # use treespace
 res <- treespace::treespace(phy, nf=3)

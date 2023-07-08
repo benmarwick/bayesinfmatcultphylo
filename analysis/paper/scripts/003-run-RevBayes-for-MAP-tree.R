@@ -10,6 +10,7 @@ if_no_output_files_then_run_revbayes_scripts_fn <- function(){
 
   # check to see what folders of output we have
   library(tidyverse)
+  library(fs)
   revbayes_script_files =
     dir_ls(here::here("analysis/paper/scripts")) %>%
     str_subset("\\.Rev")

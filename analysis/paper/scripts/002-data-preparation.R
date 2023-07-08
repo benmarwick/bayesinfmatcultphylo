@@ -6,7 +6,7 @@ prepare_arrowhead_data_for_input_to_revbayes_fn <- function(
                                                             arrowhead_typochronology
                                                             ){
 
-
+## if we are not using targets, we can import the data with these
 # arrowhead_outlines =       here::here("analysis/data/raw_data/outlines_combined_nicholas_2016.RDS")
 #,
 # arrowhead_locations =      here::here("analysis/data/raw_data/nicolas_fleches_2016_catalog_ids_with_coordinates.csv")
@@ -80,6 +80,8 @@ nicolas_fleches_2016_catalog_ids_coordinates_artefact_ID <-
                     nicolas_fleches_2016_catalog_ids_coordinates,
                     by = "ID")
 
+write_csv(nicolas_fleches_2016_catalog_ids_coordinates_artefact_ID,
+          here("analysis/data/derived_data/nicolas_fleches_2016_catalog_ids_coordinates_artefact_ID.csv"))
 
 outlines_combined_nicolas_2016_centered_scaled <-
   Momocs::Out(outlines_combined_nicolas_2016_centered_scaled$coo,
