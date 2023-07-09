@@ -1,6 +1,17 @@
 
-make_summary_table_of_models_fn <- function(){
+make_summary_table_of_models_fn <- function(revbayes_script_001_file,
+                                            revbayes_script_002_file,
+                                            revbayes_script_003_file,
+                                            revbayes_script_004_file,
+                                            revbayes_script_005_file){
 # Here we summarise the phylogenetic models we explored
+
+
+x <-   list(revbayes_script_001_file,
+       revbayes_script_002_file,
+       revbayes_script_003_file,
+       revbayes_script_004_file,
+       revbayes_script_005_file)
 
 library(tidyverse)
 

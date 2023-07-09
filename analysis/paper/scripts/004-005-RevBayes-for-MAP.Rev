@@ -24,7 +24,7 @@
 
 getwd() # confirm that we are in the project directory where are input/output files are
 
-# create file names:
+# create file names: ----------------------------------------------------------
 
 output_file <- "output-005"
 
@@ -43,6 +43,16 @@ outssm <- "analysis/data/derived_data/" + output_file + "/ssm.csv"
 outpsm <- "analysis/data/derived_data/" + output_file + "/psm.csv"
 
 intree <- "analysis/data/derived_data/output-001/map_tree.nex"
+
+# set some parameters ----------------------------------------------
+chain_burnin            <- 5000  # originally 50000
+tuning_interval         <- 50    # originally 500
+chain_run               <- 50000 # originally 500000
+pow_p_burnin_gen        <- 5000  # originally 5000
+pow_p_tuning_interval   <- 200   # originally 200
+pow_p_run_gen           <- 1000 # originally  1000
+
+
 
 # import the data into RevBayes, watch terminal for message indicating success
 contData <- readContinuousCharacterData(fl)
@@ -197,12 +207,12 @@ bmv = model(sigma, logSigma, tree)     # link sigma param w/ BM model
 # proportion to their posterior probability. The mcmc() function will
 # create our MCMC object:
 chain = mcmc(bmv, monitors, moves)
-chain.burnin(generations=50, tuningInterval=5) # originally 50000 and 500
+chain.burnin(generations=chain_burnin, tuningInterval=tuning_interval)
 
-chain.run(500) # originally 500000
+chain.run(chain_run)
 # To summarize the trees sampled from the posterior distribution,
 # RevBayes can summarize the sampled trees by reading in the tree-trace file:
-treetrace = readTreeTrace(file = outnt)
+treetrace = readTreeTrace(file = outtr)
 treefl <- outsm
 
 # The mapTree() function will summarize the tree samples and write the
@@ -211,17 +221,14 @@ treefl <- outsm
 map = mapTree( file=treefl, treetrace )
 mccTree( file=outmc, treetrace )
 
-# -----------------------------------------------------------------------
+# ----------------------------------------------
 # from https://revbayes.github.io/tutorials/model_selection_bayes_factors/bf_intro.html
 # this section does the Bayes Factor analysis
 
-### create a monitor to log the samples to file
-monitors[1] = mnModel(filename=bm_basic_posterior_pp,printgen=10, separator = TAB)
-
 ### compute power posterior distributions
 pow_p = powerPosterior(bmv, moves, monitors, BM_basic_powp, cats=50, sampleFreq=10)
-pow_p.burnin(generations=500,tuningInterval=20) # originally 5000
-pow_p.run(generations=100) # originally 1000
+pow_p.burnin(generations=pow_p_burnin_gen, tuningInterval=pow_p_tuning_interval)
+pow_p.run(generations=pow_p_run_gen)
 
 ### use stepping-stone sampling to calculate marginal likelihoods
 ss = steppingStoneSampler(file=BM_basic_powp, powerColumnName="power", likelihoodColumnName="likelihood")
@@ -231,5 +238,6 @@ write( ss.marginal(), filename =  outssm)
 ps = pathSampler(file=BM_basic_powp, powerColumnName="power", likelihoodColumnName="likelihood")
 write( ps.marginal(), filename = outpsm )
 
+#--
 
 q() # quits RevBayes

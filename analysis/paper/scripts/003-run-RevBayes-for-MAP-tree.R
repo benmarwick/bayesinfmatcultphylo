@@ -32,7 +32,6 @@ if_no_output_files_then_run_revbayes_scripts_fn <- function(){
 
     if(is.na(scripts_and_outputs_tbl$output_data_files[i])) {
       num <-  substr(basename(scripts_and_outputs_tbl$revbayes_script_files[i]), 5, 7)
-      target_to_run <- paste0("run_revbayes_script_", num)
       file <-  here::here(paste0("analysis/paper/scripts/004-", num, "-RevBayes-for-MAP.Rev"))
       system(
         paste0("cd ",
@@ -41,6 +40,8 @@ if_no_output_files_then_run_revbayes_scripts_fn <- function(){
                "/Applications/revbayes-v1.2.1/bin/rb  ",
                file)
         )
+    } else {
+       # do nothing, move to the next item
     }
 
   }
@@ -48,58 +49,58 @@ if_no_output_files_then_run_revbayes_scripts_fn <- function(){
 }
 
 
-run_revbayes_script_001_fn <- function(file,
-                                      data_for_revbayes) {
-  x <- data_for_revbayes
+run_revbayes_script_001_fn <- function(revbayes_script_001_file,
+                                       data_for_revbayes_nex) {
+  x <- data_for_revbayes_nex
   system(paste0("cd ",
                 here::here(), # change to project working directory
                 " && ",
                 "/Applications/revbayes-v1.2.1/bin/rb  ",
-                file # this is the .Rev file path we set in _targets.R
+                revbayes_script_001_file # this is the .Rev file path we set in _targets.R
                 ))
 }
 
-run_revbayes_script_002_fn <- function(file,
-                                      data_for_revbayes) {
-  x <- data_for_revbayes
+run_revbayes_script_002_fn <- function(revbayes_script_002_file,
+                                       data_for_revbayes_nex) {
+  x <- data_for_revbayes_nex
   system(paste0("cd ",
                 here::here(), # change to project working directory
                 " && ",
                 "/Applications/revbayes-v1.2.1/bin/rb  ",
-                file # this is the .Rev file path we set in _targets.R
+                revbayes_script_002_file # this is the .Rev file path we set in _targets.R
   ))
 }
 
-run_revbayes_script_003_fn <- function(file,
-                                      data_for_revbayes) {
-  x <- data_for_revbayes
+run_revbayes_script_003_fn <- function(revbayes_script_003_file,
+                                       data_for_revbayes_nex) {
+  x <- data_for_revbayes_nex
   system(paste0("cd ",
                 here::here(), # change to project working directory
                 " && ",
                 "/Applications/revbayes-v1.2.1/bin/rb  ",
-                file # this is the .Rev file path we set in _targets.R
+                revbayes_script_003_file # this is the .Rev file path we set in _targets.R
   ))
 }
 
-run_revbayes_script_004_fn <- function(file,
-                                      data_for_revbayes) {
-  x <- data_for_revbayes
+run_revbayes_script_004_fn <- function(revbayes_script_004_file,
+                                       data_for_revbayes_nex) {
+  x <- data_for_revbayes_nex
   system(paste0("cd ",
                 here::here(), # change to project working directory
                 " && ",
                 "/Applications/revbayes-v1.2.1/bin/rb  ",
-                file # this is the .Rev file path we set in _targets.R
+                revbayes_script_004_file # this is the .Rev file path we set in _targets.R
   ))
 }
 
-run_revbayes_script_005_fn <- function(file,
-                                      data_for_revbayes) {
-  x <- data_for_revbayes
+run_revbayes_script_005_fn <- function(revbayes_script_005_file,
+                                       data_for_revbayes_nex) {
+  x <- data_for_revbayes_nex
   system(paste0("cd ",
                 here::here(), # change to project working directory
                 " && ",
                 "/Applications/revbayes-v1.2.1/bin/rb  ",
-                file # this is the .Rev file path we set in _targets.R
+                revbayes_script_005_file # this is the .Rev file path we set in _targets.R
   ))
 }
 

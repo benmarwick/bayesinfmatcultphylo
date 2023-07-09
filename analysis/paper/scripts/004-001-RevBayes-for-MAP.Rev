@@ -41,6 +41,16 @@ pp_out <- "analysis/data/derived_data/" + output_file +   "/pp_out"
 outssm <- "analysis/data/derived_data/" + output_file +   "/ssm.csv"
 outpsm <- "analysis/data/derived_data/" + output_file +   "/psm.csv"
 
+# set some parameters -----------------------------
+chain_burnin            <- 5000  # originally 50000
+tuning_interval         <- 50    # originally 500
+chain_run               <- 50000 # originally 500000
+pow_p_burnin_gen        <- 5000  # originally 5000
+pow_p_tuning_interval   <- 200   # originally 200
+pow_p_run_gen           <- 1000 # originally  1000
+
+#------------------------
+
 
 # import the data into RevBayes, watch terminal for message indicating success
 contData <- readContinuousCharacterData(fl)
@@ -105,9 +115,9 @@ bmv = model(sigma)     # link sigma param w/ BM model
 # proportion to their posterior probability. The mcmc() function will
 # create our MCMC object:
 chain = mcmc(bmv, monitors, moves)
-chain.burnin(generations=50, tuningInterval=5) # originally 50000 and 500
+chain.burnin(generations=chain_burnin, tuningInterval=tuning_interval)
 
-chain.run(500) # originally 500000
+chain.run(chain_run)
 # To summarize the trees sampled from the posterior distribution,
 # RevBayes can summarize the sampled trees by reading in the tree-trace file:
 treetrace = readTreeTrace(file = outtr)
@@ -125,8 +135,8 @@ mccTree( file=outmc, treetrace )
 
 ### compute power posterior distributions
 pow_p = powerPosterior(bmv, moves, monitors, BM_basic_powp, cats=50, sampleFreq=10)
-pow_p.burnin(generations=500,tuningInterval=20) # originally 5000
-pow_p.run(generations=100) # originally 1000
+pow_p.burnin(generations=pow_p_burnin_gen, tuningInterval=pow_p_tuning_interval)
+pow_p.run(generations=pow_p_run_gen)
 
 ### use stepping-stone sampling to calculate marginal likelihoods
 ss = steppingStoneSampler(file=BM_basic_powp, powerColumnName="power", likelihoodColumnName="likelihood")
@@ -136,7 +146,6 @@ write( ss.marginal(), filename =  outssm)
 ps = pathSampler(file=BM_basic_powp, powerColumnName="power", likelihoodColumnName="likelihood")
 write( ps.marginal(), filename = outpsm )
 
-1+1
 
 #-----
 
