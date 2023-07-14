@@ -1,14 +1,46 @@
 name|type|data|command|depend|seed|path|time|size|bytes|format|repository|iteration|parent|children|seconds|warnings|error
+.Random.seed|object|5069b4e64133f4a1|||||||||||||||
+arrowhead_locations_file|stem|7cd6c9a985db666f|c2405ef9f984b2dc|c3b5fc02cdc369c1|166459993|/Users/bmarwick/Downloads/bayesinfmatcultphylo/analysis/data/raw_data/nicolas_fleches_2016_catalog_ids_with_coordinates.csv|t19520.6983626857s|11375c8ea2025d61|21034|file|local|vector|||0.001||
+arrowhead_outlines_file|stem|ac2cc53fab2a5f97|cac0e3d18228f149|c3b5fc02cdc369c1|-248694757|/Users/bmarwick/Downloads/bayesinfmatcultphylo/analysis/data/raw_data/outlines_combined_nicholas_2016.RDS|t19520.6983627146s|25d0733cbc897825|350408|file|local|vector|||0.001||
+arrowhead_typochronology_file|stem|82322eac5f96ea6b|7bfaf553cf16e5b5|c3b5fc02cdc369c1|-1241049308|/Users/bmarwick/Downloads/bayesinfmatcultphylo/analysis/data/raw_data/nicolas_2017_typochronologie.csv|t19520.6983626824s|da6f18931a3de71a|991|file|local|vector|||0.001||
+biblio_data_file|stem|84d3e507e99c8eb7|c4a593a3c7b25ddb|c3b5fc02cdc369c1|602014005|/Users/bmarwick/Downloads/bayesinfmatcultphylo/analysis/data/raw_data/Archaeology phylogenetics case studies.xlsx|t19523.2583001057s|b3afbce88f144e32|31911|file|local|vector|||0.001||
 bilbiometrics_figure_fn|function|d4692ee63ec4f533|||||||||||||||
-generate_phylogeny_figures_fn|function|92a66810afdf9777|||||||||||||||
+bilbiometrics_figure_function|stem|438364b9868e387c|8298b5594deae576|1468c2d5cec73dc6|409995514||t19550.0999383265s|f21b4888ae8bdafc|118|qs|local|vector|||11.989|Expecting numeric in O3  R3C15 got a date. Expecting numeric in O7  R7C15 got a date. Expecting numeric in O15  R15C15 got a date. Expecting numeric in O37  R37C15 got a date. Expecting numeric in O42  R42C15 got a date. Expecting numeric in O43  R43C15 got a date|
+data_for_revbayes_csv_file|stem|ff789008a6f6161d|e3a7fbd4a1f1e560|c3b5fc02cdc369c1|1922934496|/Users/bmarwick/Downloads/bayesinfmatcultphylo/analysis/data/derived_data/data_for_revbayes.csv|t19550.230106446s|cc293fdfbe721e62|46182|file|local|vector|||0.001||
+data_for_revbayes_nex|stem|f1f3d32f7f882be2|7235ba8de3313396|c3b5fc02cdc369c1|335772615|/Users/bmarwick/Downloads/bayesinfmatcultphylo/analysis/data/derived_data/data_for_revbayes.nex|t19550.2301062712s|7a9b0fe2df5e4a2f|45184|file|local|vector|||0.001||
+fr|object|a109977659a4af0b|||||||||||||||
+fr_base_map|object|04797470e8be5594|||||||||||||||
+generate_map_of_arrowhead_locations_fn|function|2c6d7e089d1e5efe|||||||||||||||
+generate_phylogeny_figures|stem|677e371331e5b8b1|2f4b377ff04b9ecc|1dbc16ff18dd9e4a|2038808073||t19551.0720545438s|506f9f6b3747f807|42|qs|local|vector|||404.122||
+generate_phylogeny_figures_fn|function|f6bad273e6af3690|||||||||||||||
 if_no_output_files_then_run_revbayes_scripts_fn|function|dc2d649debe61aa2|||||||||||||||
+make_summary_table_of_models|stem|c28ac0db93a2407a|0ecd5738fdc214d8|5d343924f5f85fc1|-1804878330||t19550.2299324827s|ae554ca7b2a44275|271|qs|local|vector|||2.533||
 make_summary_table_of_models_fn|function|66f35105900c8458|||||||||||||||
-my_script_files|object|df6a763e48827f8e|||||||||||||||
+map_of_sites|object|7544ca9d7f78e001|||||||||||||||
+map_tree_for_plotting_file|stem|79733c0c02f6d08c|9e2b8e7a7f0e8f34|c3b5fc02cdc369c1|-1116364941|/Users/bmarwick/Downloads/bayesinfmatcultphylo/analysis/data/derived_data/output-002/map_tree.nex|t19550.2842430528s|e40f332a8110b979|17185|file|local|vector|||0||
+my_script_files|object|38a74ecbb34af3d1|||||||||||||||
+mycrs|object|abef64033cdde9e4|||||||||||||||
+nicolas_fleches_2016_catalog_ids_coordinates_artefact_ID|object|7a4d5015fab1555c|||||||||||||||
+nicolas_fleches_2016_catalog_ids_coordinates_sf|object|7d1e764707af77a4|||||||||||||||
 prepare_arrowhead_data_for_input_to_revbayes_fn|function|45307e2a64ecf68c|||||||||||||||
-revbayes_script_004_file|stem|eda60a03e80a940a|eba8a4c801b114bb|c3b5fc02cdc369c1|-936850989|/Users/bmarwick/Downloads/bayesinfmatcultphylo/analysis/paper/scripts/004-004-RevBayes-for-MAP.Rev|t19547.1864510189s|0f1a7640e17772dc|9341|file|local|vector|||0.001||
+prepare_arrowhead_data_for_input_to_revbayes_function|stem|a73c5ff818049d6a|5e984bbea8dc6857|d31d590d4f9f05e7|-925178454||t19550.2301064733s|5f7abfc828666f2f|15627|qs|local|vector|||15.013|mutate_ was deprecated in dplyr 0.7.0.ℹ Please use mutate instead.ℹ See vignetteprogramming for more helpℹ The deprecated feature was likely used in the Momocs package.  Please report the issue at httpsgithub.comMomXMomocsissues.. There was 1 warning in dplyrmutate.ℹ In argument taxa  ....Caused by warning The x argument of as_tibble.matrix must have unique column names if  .name_repair is omitted as of tibble 2.0.0.ℹ Using compatibility .name_repair.|
+report|stem|6dd71d12008128c1|a0ac2abf80aeadaa|c3b5fc02cdc369c1|-237041703||t19550.0601652839s|de1c6d017cb4e8a8|38|qs|local|vector|||15.481||
+revbayes_script_001_file|stem|47b08dee4a8f23a7|5e01c99595e594c2|c3b5fc02cdc369c1|1657974783|/Users/bmarwick/Downloads/bayesinfmatcultphylo/analysis/paper/scripts/004-001-RevBayes-for-MAP.Rev|t19547.7918205793s|8a0c7d4b753f8906|5600|file|local|vector|||0.002||
+revbayes_script_002_file|stem|1fa93f0e19866a0c|5142e73ed87f2e6f|c3b5fc02cdc369c1|458232888|/Users/bmarwick/Downloads/bayesinfmatcultphylo/analysis/paper/scripts/004-002-RevBayes-for-MAP.Rev|t19547.7943981048s|1c3d68c9e93a5f40|5668|file|local|vector|||0.001||
+revbayes_script_003_file|stem|c8c2d17a19bd44c8|bbd421e8ac93284f|c3b5fc02cdc369c1|-99738688|/Users/bmarwick/Downloads/bayesinfmatcultphylo/analysis/paper/scripts/004-003-RevBayes-for-MAP.Rev|t19547.794478658s|648c053f5ae0e879|6400|file|local|vector|||0.001||
+revbayes_script_004_file|stem|d697c70844caef24|eba8a4c801b114bb|c3b5fc02cdc369c1|-936850989|/Users/bmarwick/Downloads/bayesinfmatcultphylo/analysis/paper/scripts/004-004-RevBayes-for-MAP.Rev|t19547.7945563391s|a40869fff18fa22b|7387|file|local|vector|||0.001||
+revbayes_script_005_file|stem|c57c26982abc3350|30b56af5013dfc86|c3b5fc02cdc369c1|-2125421236|/Users/bmarwick/Downloads/bayesinfmatcultphylo/analysis/paper/scripts/004-005-RevBayes-for-MAP.Rev|t19548.02093567s|b66004c30c209764|9730|file|local|vector|||0.002||
 run_revbayes_script_001_fn|function|0987ca0404bf9bdd|||||||||||||||
+run_revbayes_script_001_function|stem|677e371331e5b8b1|8519260446392635|be6994d93d723d5b|-1963256674||t19550.2932507649s|506f9f6b3747f807|42|qs|local|vector|||115.168||
 run_revbayes_script_002_fn|function|8b1351396d582e70|||||||||||||||
+run_revbayes_script_002_function|stem|677e371331e5b8b1|fa7648a8e0d3306b|229fed4e26f2b56c|524123384||t19550.2852234846s|506f9f6b3747f807|42|qs|local|vector|||128.132||
 run_revbayes_script_003_fn|function|3b6c6f516958668f|||||||||||||||
+run_revbayes_script_003_function|stem|677e371331e5b8b1|226238505df46b4a|716e25a5f731f343|-2119525492||t19550.2919172493s|506f9f6b3747f807|42|qs|local|vector|||578.307||
 run_revbayes_script_004_fn|function|f411ea76067e65f6|||||||||||||||
+run_revbayes_script_004_function|stem|677e371331e5b8b1|3faef4bdb65dc98c|b19194e24922d3d9|-2136491616||t19550.2837398114s|506f9f6b3747f807|42|qs|local|vector|||3253.878||
 run_revbayes_script_005_fn|function|a5f9da15516ab49a|||||||||||||||
+run_revbayes_script_005_function|stem|677e371331e5b8b1|5c348f5b4786a5c4|44ffc83f82d9291c|-1880869761||t19550.8288545538s|506f9f6b3747f807|42|qs|local|vector|||46276.093||
 treespace_for_plotting|stem||787c79bd18f897d0|c3b5fc02cdc369c1|1497060545|/Users/bmarwick/Downloads/bayesinfmatcultphylo/analysis/data/derived_data/output-002/tree_trace.trees|t19547.190628s||0|file|local|vector|||||_paths_ missing files UsersbmarwickDownloadsbayesinfmatcultphyloanalysisdataderived_dataoutput002tree_trace.trees
+treespace_for_plotting_file|stem|042957518c41d4d7|787c79bd18f897d0|c3b5fc02cdc369c1|2092359980|/Users/bmarwick/Downloads/bayesinfmatcultphylo/analysis/data/derived_data/output-002/tree_trace.trees|t19550.2841970253s|dbf455e5d940deea|7987443|file|local|vector|||0.001||
+world|object|d9ef746b9717f752|||||||||||||||
+worldplot|object|7c6b028056613c0b|||||||||||||||

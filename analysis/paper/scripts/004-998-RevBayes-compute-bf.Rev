@@ -1,0 +1,22 @@
+
+# all our script files will use these settings to compute values needed to get Bayes Factors:
+
+# ----------------------------------------------
+# from https://revbayes.github.io/tutorials/model_selection_bayes_factors/bf_intro.html
+# this section does the Bayes Factor analysis
+
+### compute power posterior distributions
+pow_p = powerPosterior(bmv, moves, monitors, BM_basic_powp, cats=50, sampleFreq=10)
+pow_p.burnin(generations=pow_p_burnin_gen, tuningInterval=pow_p_tuning_interval)
+pow_p.run(generations=pow_p_run_gen)
+
+### use stepping-stone sampling to calculate marginal likelihoods
+ss = steppingStoneSampler(file=BM_basic_powp, powerColumnName="power", likelihoodColumnName="likelihood")
+write( ss.marginal(), filename =  outssm)
+
+### use path sampling to calculate marginal likelihoods
+ps = pathSampler(file=BM_basic_powp, powerColumnName="power", likelihoodColumnName="likelihood")
+write( ps.marginal(), filename = outpsm )
+
+
+#-----

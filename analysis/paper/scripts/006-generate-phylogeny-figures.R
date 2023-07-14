@@ -21,9 +21,9 @@ library(ggtree)
 dpi <- 600
 
 # if we are not using targets, we can load the data here
-# map_tree_for_plotting = here::here("analysis/data/derived_data/output-002/map_tree.nex")
-# treespace_for_plotting = here::here("analysis/data/derived_data/output-002/tree_trace.trees")
-# data_for_revbayes_csv = here::here("analysis/data/derived_data/data_for_revbayes.csv")
+# map_tree_for_plotting_file = here::here("analysis/data/derived_data/output-002/map_tree.nex")
+# treespace_for_plotting_file = here::here("analysis/data/derived_data/output-002/tree_trace.trees")
+# data_for_revbayes_csv_file = here::here("analysis/data/derived_data/data_for_revbayes.csv")
 
 outsumfile <- ape::read.nexus(map_tree_for_plotting_file)
 data_for_revbayes <- read_csv(data_for_revbayes_csv_file)
@@ -33,7 +33,7 @@ data_for_revbayes <- read_csv(data_for_revbayes_csv_file)
 # read in the tree space
 phy_raw <- ape::read.tree(treespace_for_plotting_file)
 phy_raw <- di2multi(phy_raw, tol = 1e-08) # remove -ve branch lengths
-phy <- phy_raw[1:10] # small sample while exploring and polishing, because this is very slow
+phy <- phy_raw[1:1000] # small sample while exploring and polishing, because this is very slow
 
 # use treespace
 res <- treespace::treespace(phy, nf=3)
@@ -179,7 +179,8 @@ system(paste0("convert -append ",
 # #  visualize the branch-specific rates by plotting them using
 # R package RevGadgets.
 
-outsumfile_trees <- RevGadgets::readTrees(here::here("analysis/data/derived_data/output-005/map_tree.nex"))
+outsumfile_trees <- RevGadgets::readTrees(here::here("analysis/data/derived_data/output-005/map_tree.nex"),
+                                          tree_name = "Tree")
 
 outsumfile_trees_phy <- outsumfile_trees[[1]][[1]]
 
@@ -280,6 +281,10 @@ system(paste0("convert +append ",
               " ",
               "-resize x2000 -density 1000 -quality 99 ",
               here::here("analysis/figures/tree-rates-morphospace.png")))
+
+
+
+
 
 }
 

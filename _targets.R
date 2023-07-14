@@ -13,9 +13,9 @@
 # Load packages required to define the pipeline:
 library(targets)
 library(tarchetypes) # Load other packages as needed.
-options(crayon.enabled = FALSE, 
+options(crayon.enabled = FALSE,
          tidyverse.quiet = TRUE,
-         memory = "transient", 
+         memory = "transient",
          garbage_collection = TRUE)
 
 # Set target options:
@@ -72,7 +72,7 @@ list(
   ),
   # monitor the data that will go into revbayes for changes
   tar_target(
-    name = data_for_revbayes_csv,
+    name = data_for_revbayes_csv_file,
     here::here("analysis/data/derived_data/data_for_revbayes.csv"),
     format = "file"
   ),
@@ -145,21 +145,21 @@ list(
   # Generate figures summarising the results of the MCMC that we use in the
   # paper
   tar_target(
-    name = map_tree_for_plotting,
+    name = map_tree_for_plotting_file,
     command = here::here("analysis/data/derived_data/output-002/map_tree.nex"),
     format = "file"
   ),
   tar_target(
-    name = treespace_for_plotting,
+    name = treespace_for_plotting_file,
     command = here::here("analysis/data/derived_data/output-002/tree_trace.trees"),
     format = "file"
   ),
 
   tar_target(
     name = generate_phylogeny_figures,
-    command = generate_phylogeny_figures_fn(map_tree_for_plotting,
-                                            treespace_for_plotting,
-                                            data_for_revbayes_csv)
+    command = generate_phylogeny_figures_fn(map_tree_for_plotting_file,
+                                            treespace_for_plotting_file,
+                                            data_for_revbayes_csv_file)
   ),
   #------------------------------------------------------------------------
   # Summarise the characteristics of the models and their

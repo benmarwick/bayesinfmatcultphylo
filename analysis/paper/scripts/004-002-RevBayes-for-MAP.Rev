@@ -28,29 +28,11 @@ getwd() # confirm that we are in the project directory where are input/output fi
 
 output_file <- "output-002"
 
-fl <- "analysis/data/derived_data/data_for_revbayes.nex"  # continuous character set used for analysis in nexus format
-outtr <- "analysis/data/derived_data/" + output_file +  "/tree_trace.trees"  # file to write sampled trees
-outlf <- "analysis/data/derived_data/" + output_file +  "/mcmc_log.txt"      # MCMC log
-outsm <- "analysis/data/derived_data/" + output_file +  "/map_tree.nex"      # MAP summary tree file
-outmc <- "analysis/data/derived_data/" + output_file +  "/mcc_tree.nex"      # MCC summary tree file
+# run code to create file names for output
+source("analysis/paper/scripts/004-996-RevBayes-filenames.Rev")
 
-bm_basic_posterior_pp <- "analysis/data/derived_data/" + output_file +  "/BM_basic_posterior_pp.log"
-BM_basic_powp <-         "analysis/data/derived_data/" + output_file +  "/BM_basic_powp.out"
-
-pp_out <- "analysis/data/derived_data/" + output_file +  "/pp_out"
-outssm <- "analysis/data/derived_data/" + output_file +  "/ssm.csv"
-outpsm <- "analysis/data/derived_data/" + output_file +  "/psm.csv"
-
-# set some parameters ----------------------------------------------
-chain_burnin            <- 5000  # originally 50000
-tuning_interval         <- 50    # originally 500
-chain_run               <- 50000 # originally 500000
-pow_p_burnin_gen        <- 5000  # originally 5000
-pow_p_tuning_interval   <- 200   # originally 200
-pow_p_run_gen           <- 1000 # originally  1000
-
-#----------------------------------------------------------------
-
+# run code to set MCMC run lengths
+source("analysis/paper/scripts/004-997-RevBayes-mcmc-settings.Rev")
 
 # import the data into RevBayes, watch terminal for message indicating success
 contData <- readContinuousCharacterData(fl)
@@ -129,24 +111,9 @@ treefl <- outsm
 map = mapTree( file=treefl, treetrace )
 mccTree( file=outmc, treetrace )
 
-# ----------------------------------------------
-# from https://revbayes.github.io/tutorials/model_selection_bayes_factors/bf_intro.html
-# this section does the Bayes Factor analysis
+# run code to get output for Bayes Factors
+source("analysis/paper/scripts/004-998-RevBayes-compute-bf.Rev")
 
-### compute power posterior distributions
-pow_p = powerPosterior(bmv, moves, monitors, BM_basic_powp, cats=50, sampleFreq=10)
-pow_p.burnin(generations=pow_p_burnin_gen, tuningInterval=pow_p_tuning_interval)
-pow_p.run(generations=pow_p_run_gen)
-
-### use stepping-stone sampling to calculate marginal likelihoods
-ss = steppingStoneSampler(file=BM_basic_powp, powerColumnName="power", likelihoodColumnName="likelihood")
-write( ss.marginal(), filename =  outssm)
-
-### use path sampling to calculate marginal likelihoods
-ps = pathSampler(file=BM_basic_powp, powerColumnName="power", likelihoodColumnName="likelihood")
-write( ps.marginal(), filename = outpsm )
-
-#--
 
 
 q() # quits RevBayes
