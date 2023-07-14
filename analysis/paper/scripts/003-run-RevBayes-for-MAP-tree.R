@@ -13,7 +13,7 @@ if_no_output_files_then_run_revbayes_scripts_fn <- function(){
   library(fs)
   revbayes_script_files =
     dir_ls(here::here("analysis/paper/scripts")) %>%
-    str_subset("\\.Rev")
+    str_subset(".*004-00.*\\.Rev")
   output_data_files =
     dir_ls(here::here("analysis/data/derived_data")) %>%
     str_subset("output-0")
@@ -37,7 +37,7 @@ if_no_output_files_then_run_revbayes_scripts_fn <- function(){
         paste0("cd ",
                here::here(), # change to project working directory
                " && ",
-               "/Applications/revbayes-v1.2.1/bin/rb  ",
+               "/Applications/revbayes-v1.2.1/bin/rb  ",,
                file)
         )
     } else {
