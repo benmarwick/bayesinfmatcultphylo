@@ -7,10 +7,16 @@
 # targets::tar_make()
 # in the R console
 
+# BM: to run individual targets, run
+# targets::tar_load()
+
 # Load packages required to define the pipeline:
 library(targets)
 library(tarchetypes) # Load other packages as needed.
-options(crayon.enabled = FALSE, tidyverse.quiet = TRUE)
+options(crayon.enabled = FALSE,
+         tidyverse.quiet = TRUE,
+         memory = "transient",
+         garbage_collection = TRUE)
 
 # Set target options:
 tar_option_set(
@@ -35,38 +41,38 @@ list(
     format = "file"
     ),
   tar_target(
-    name = bilbiometrics_figure,
+    name = bilbiometrics_figure_function,
     command = bilbiometrics_figure_fn(biblio_data_file)
   ),
   #------------------------------------------------------------------------
   # identify files that we need to read in to prepare the data for revbayes
   # this will ensure they are monitored for changes
   tar_target(
-    name = arrowhead_outlines,
+    name = arrowhead_outlines_file,
     here::here("analysis/data/raw_data/outlines_combined_nicholas_2016.RDS"),
     format = "file"
   ),
   tar_target(
-    name = arrowhead_locations,
+    name = arrowhead_locations_file,
     here::here("analysis/data/raw_data/nicolas_fleches_2016_catalog_ids_with_coordinates.csv"),
     format = "file"
   ),
   tar_target(
-    name = arrowhead_typochronology,
+    name = arrowhead_typochronology_file,
     here::here("analysis/data/raw_data/nicolas_2017_typochronologie.csv"),
     format = "file"
   ),
   # run the code to do the EFA and subset French arrowheads to prepare for input
   # into revbayes
   tar_target(
-    name = prepare_arrowhead_data_for_input_to_revbayes,
-    command = prepare_arrowhead_data_for_input_to_revbayes_fn(arrowhead_outlines,
-                                                              arrowhead_locations,
-                                                              arrowhead_typochronology)
+    name = prepare_arrowhead_data_for_input_to_revbayes_function,
+    command = prepare_arrowhead_data_for_input_to_revbayes_fn(arrowhead_outlines_file,
+                                                              arrowhead_locations_file,
+                                                              arrowhead_typochronology_file)
   ),
   # monitor the data that will go into revbayes for changes
   tar_target(
-    name = data_for_revbayes_csv,
+    name = data_for_revbayes_csv_file,
     here::here("analysis/data/derived_data/data_for_revbayes.csv"),
     format = "file"
   ),
@@ -81,57 +87,57 @@ list(
   # run revbayes. We also have the Rev script files are targets to ensure
   # they are monitored and re-run when we change them
   tar_target(
-    name = revbayes_script_01,
-    command = here::here("analysis/paper/scripts/004-01-RevBayes-for-MAP.Rev"),
+    name = revbayes_script_001_file,
+    command = here::here("analysis/paper/scripts/004-001-RevBayes-for-MAP.Rev"),
     format = "file"
   ),
   tar_target(
-    name = run_revbayes_script_01,
-    command = run_revbayes_script_01_fn(revbayes_script_01,
+    name = run_revbayes_script_001_function,
+    command = run_revbayes_script_001_fn(revbayes_script_001_file,
                                         data_for_revbayes_nex
                                         )
   ),
   tar_target(
-    name = revbayes_script_02,
-    command = here::here("analysis/paper/scripts/004-02-RevBayes-for-MAP.Rev"),
+    name = revbayes_script_002_file,
+    command = here::here("analysis/paper/scripts/004-002-RevBayes-for-MAP.Rev"),
     format = "file"
   ),
   tar_target(
-    name = run_revbayes_script_02,
-    command = run_revbayes_script_02_fn(revbayes_script_02,
+    name = run_revbayes_script_002_function,
+    command = run_revbayes_script_002_fn(revbayes_script_002_file,
                                         data_for_revbayes_nex
     )
   ),
   tar_target(
-    name = revbayes_script_03,
-    command = here::here("analysis/paper/scripts/004-03-RevBayes-for-MAP.Rev"),
+    name = revbayes_script_003_file,
+    command = here::here("analysis/paper/scripts/004-003-RevBayes-for-MAP.Rev"),
     format = "file"
   ),
   tar_target(
-    name = run_revbayes_script_03,
-    command = run_revbayes_script_03_fn(revbayes_script_03,
+    name = run_revbayes_script_003_function,
+    command = run_revbayes_script_003_fn(revbayes_script_003_file,
                                         data_for_revbayes_nex
     )
   ),
   tar_target(
-    name = revbayes_script_04,
-    command = here::here("analysis/paper/scripts/004-04-RevBayes-for-MAP.Rev"),
+    name = revbayes_script_004_file,
+    command = here::here("analysis/paper/scripts/004-004-RevBayes-for-MAP.Rev"),
     format = "file"
   ),
   tar_target(
-    name = run_revbayes_script_04,
-    command = run_revbayes_script_04_fn(revbayes_script_04,
+    name = run_revbayes_script_004_function,
+    command = run_revbayes_script_004_fn(revbayes_script_004_file,
                                         data_for_revbayes_nex
     )
   ),
   tar_target(
-    name = revbayes_script_05,
-    command = here::here("analysis/paper/scripts/004-05-RevBayes-for-MAP.Rev"),
+    name = revbayes_script_005_file,
+    command = here::here("analysis/paper/scripts/004-005-RevBayes-for-MAP.Rev"),
     format = "file"
   ),
   tar_target(
-    name = run_revbayes_script_05,
-    command = run_revbayes_script_05_fn(revbayes_script_05,
+    name = run_revbayes_script_005_function,
+    command = run_revbayes_script_005_fn(revbayes_script_005_file,
                                         data_for_revbayes_nex
     )
   ),
@@ -139,28 +145,32 @@ list(
   # Generate figures summarising the results of the MCMC that we use in the
   # paper
   tar_target(
-    name = map_tree_for_plotting,
-    command = here::here("analysis/data/derived_data/output-02/map_tree.nex"),
+    name = map_tree_for_plotting_file,
+    command = here::here("analysis/data/derived_data/output-002/map_tree.nex"),
     format = "file"
   ),
   tar_target(
-    name = treespace_for_plotting,
-    command = here::here("analysis/data/derived_data/output-02/tree_trace.trees"),
+    name = treespace_for_plotting_file,
+    command = here::here("analysis/data/derived_data/output-002/tree_trace.trees"),
     format = "file"
   ),
 
   tar_target(
     name = generate_phylogeny_figures,
-    command = generate_phylogeny_figures_fn(map_tree_for_plotting,
-                                            treespace_for_plotting,
-                                            data_for_revbayes_csv)
+    command = generate_phylogeny_figures_fn(map_tree_for_plotting_file,
+                                            treespace_for_plotting_file,
+                                            data_for_revbayes_csv_file)
   ),
   #------------------------------------------------------------------------
   # Summarise the characteristics of the models and their
   # bayes factors into a small table
   tar_target(
     name = make_summary_table_of_models,
-    command = make_summary_table_of_models_fn()
+    command = make_summary_table_of_models_fn(revbayes_script_001_file,
+                                              revbayes_script_002_file,
+                                              revbayes_script_003_file,
+                                              revbayes_script_004_file,
+                                              revbayes_script_005_file)
   ),
   #------------------------------------------------------------------------
   # Finally, render the Quarto document into a Word document, drawing on the

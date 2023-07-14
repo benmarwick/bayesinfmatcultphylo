@@ -62,7 +62,7 @@ The **analysis** directory contains:
   Supplementary materials including notes and other documents prepared
   and collected during the analysis.
 
-## How to run in your browser or download and run locally
+## How to run download and run locally
 
 This research compendium has been developed using the statistical
 programming language R. To work with the compendium, you will need
@@ -71,12 +71,12 @@ software](https://cloud.r-project.org/) itself and optionally [RStudio
 Desktop](https://rstudio.com/products/rstudio/download/).
 
 You can download the compendium as a zip from from this URL:
-[master.zip](/archive/master.zip). After unzipping: - open the `.Rproj`
-file in RStudio - run `renv::restore` to ensure you have the packages
-this analysis depends on (also listed in the [DESCRIPTION](/DESCRIPTION)
-file). - finally, open `analysis/paper/paper.qmd` and render to produce
-the `paper.docx`, or run
-`quarto::quarto_render("analysis/paper/paper.qmd")` in the R console
+[master.zip](/archive/master.zip). After unzipping, open the `bayesinfmatcultphylo.Rproj`
+file in RStudio, and run `renv::restore()` to ensure you have the R packages at the correct version numbers that this analysis depends on. 
+
+[RevBayes](https://revbayes.github.io/) is an application separate from R, and you will need to download and install this on your computer to generate the phylogenetic models described in our paper. The scripts in this compendium assume it is located at `/Applications/revbayes-v1.2.1/bin/` on an OSX machine.
+
+Once the R packages have been installed, and RevBayes has been installed, the entire computational pipeline can be run using `targets::tar_make()`. This final step of this pipeline is rendering our `paper.qmd` into a Microsoft Word document which is our submitted manuscript. 
 
 ### Licenses
 

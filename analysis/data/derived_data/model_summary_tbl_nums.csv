@@ -1,0 +1,6 @@
+Model,Tree,Subsitution,Clock,Bayes Factor
+1,Pure birth,Brownian motion,Strict,1
+2,Birth-death,Brownian motion,Strict,0.98
+3,Birth-death,Brownian motion,Relaxed,1
+4,Birth-death,Relaxed Brownian motion,Relaxed,210.28
+5,Birth-death,Multivariate relaxed Brownian motion,Relaxed,0.1

@@ -1,0 +1,12 @@
+
+# all our script files will use these MCMC settings:
+
+# set some parameters -----------------------------
+chain_burnin            <- 5000  # originally 50000
+tuning_interval         <- 50    # originally 500
+chain_run               <- 50000 # originally 500000
+pow_p_burnin_gen        <- 5000  # originally 5000
+pow_p_tuning_interval   <- 200   # originally 200
+pow_p_run_gen           <- 1000 # originally  1000
+
+#------------------------

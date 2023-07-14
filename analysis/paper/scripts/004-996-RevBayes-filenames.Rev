@@ -1,0 +1,19 @@
+
+# all our script files will use these file names, each in their own output_file folder
+
+fl <- "analysis/data/derived_data/data_for_revbayes.nex"  # continuous character set used for analysis in nexus format
+outtr <- "analysis/data/derived_data/" + output_file +   "/tree_trace.trees"  # file to write sampled trees
+outlf <- "analysis/data/derived_data/" + output_file +   "/mcmc_log.txt"      # MCMC log
+outsm <- "analysis/data/derived_data/" + output_file +   "/map_tree.nex"      # MAP summary tree file
+outmc <- "analysis/data/derived_data/" + output_file +   "/mcc_tree.nex"      # MCC summary tree file
+
+outmd <- "analysis/data/derived_data/" + output_file + "/relaxed_BM.log"
+outnt <- "analysis/data/derived_data/" + output_file + "/relaxed_BM.trees"
+
+bm_basic_posterior_pp <- "analysis/data/derived_data/" + output_file +   "/BM_basic_posterior_pp.log"
+BM_basic_powp <-         "analysis/data/derived_data/" + output_file +   "/BM_basic_powp.out"
+
+pp_out <- "analysis/data/derived_data/" + output_file +   "/pp_out"
+outssm <- "analysis/data/derived_data/" + output_file +   "/ssm.csv"
+outpsm <- "analysis/data/derived_data/" + output_file +   "/psm.csv"
+
