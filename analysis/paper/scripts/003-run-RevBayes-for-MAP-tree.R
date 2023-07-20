@@ -19,6 +19,7 @@ if_no_output_files_then_run_revbayes_scripts_fn <- function(){
     dir_ls(here::here("analysis/paper/scripts")) %>%
     str_subset("\\.Rev") %>%
     str_subset("004-00")
+
   output_data_files =
     dir_ls(here::here("analysis/data/derived_data")) %>%
     str_subset("output-0")

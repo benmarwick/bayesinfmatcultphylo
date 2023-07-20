@@ -4,6 +4,12 @@ generate_phylogeny_figures_fn <- function(map_tree_for_plotting_file,
                                           data_for_revbayes_csv_file) {
 
 
+# run these when working interactively
+# data_for_revbayes_csv_file <- here::here("analysis/data/derived_data/data_for_revbayes.csv")
+# data_for_revbayes_nex <-  here::here("analysis/data/derived_data/data_for_revbayes.nex")
+# map_tree_for_plotting_file <-  here::here("analysis/data/derived_data/output-002/map_tree.nex")
+# treespace_for_plotting_file <- here::here("analysis/data/derived_data/output-002/tree_trace.trees")
+
 # https://thibautjombart.github.io/treespace/articles/introduction.html
 library("treespace")
 library("adegenet")
