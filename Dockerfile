@@ -1,22 +1,24 @@
-# get the base image, the rocker/verse has R, RStudio and pandoc
-FROM rocker/verse:4.2.2
+FROM rocker/geospatial:4.2.2
 
-# required
-MAINTAINER Your Name <your_email@somewhere.com>
+# copy our project into the directory that RStudio opens at
+COPY . /home/rstudio/bayesinfmatcultphylo
 
-COPY . /<REPO>
+RUN  . /etc/environment \
+  # set permissions for read and write, we need this to write output files
+  && sudo chmod -R 777 /home/ \
+  # install pkgs we need for the analysis
+ && R -e "install.packages('remotes', repos = c(CRAN = 'https://cloud.r-project.org'))" \
+ && R -e "remotes::install_github(c('rstudio/renv', 'quarto-dev/quarto-r'))" \
+ && R -e "setwd('/home/rstudio/bayesinfmatcultphylo'); renv::restore()" \
+  # Download and unzip RevBayes into the RStudio default working directory
+  && cd /home/rstudio/ && wget https://github.com/revbayes/revbayes/releases/download/v1.2.1/revbayes-v1.2.1-linux64.tar.gz && tar -xvzf revbayes-v1.2.1-linux64.tar.gz
 
-# go into the repo directory
-RUN . /etc/environment \
-  # Install linux depedendencies here
-  # e.g. need this for ggforce::geom_sina
-  && sudo apt-get update \
-  && sudo apt-get install libudunits2-dev -y \
-  # build this compendium package
-  && R -e "install.packages('remotes', repos = c(CRAN = 'https://cloud.r-project.org'))" \
-  && R -e "remotes::install_github(c('rstudio/renv', 'quarto-dev/quarto-r'))" \
-  # install pkgs we need
-  && R -e "renv::restore()" \
-  # render the manuscript into a docx, you'll need to edit this if you've
-  # customised the location and name of your main qmd file
-  && R -e "quarto::quarto_render('/<REPO>/analysis/paper/paper.qmd')"
+# notes on how to make this work:
+# step 1 ----------------------------------------------------------------
+# docker build -t test  -f 'Dockerfile-test' .
+# step 2 ----------------------------------------------------------------
+# docker run --rm -it -e ROOT=TRUE -e PASSWORD=rstudio -dp 8787:8787 test
+# step 3 clean up by stopping and deleting all containers ---------------
+# docker ps -aq | xargs docker stop | xargs docker rm
+
+

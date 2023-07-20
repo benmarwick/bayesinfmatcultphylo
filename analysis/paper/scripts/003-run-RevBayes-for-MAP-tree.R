@@ -8,12 +8,17 @@
 
 if_no_output_files_then_run_revbayes_scripts_fn <- function(){
 
+  path_to_revbayes <- "/home/rstudio/revbayes-v1.2.1/bin/rb  "
+  # above is in the Dockerfile
+  # my OSX is "/Applications/revbayes-v1.2.1/bin/rb  "
+
   # check to see what folders of output we have
   library(tidyverse)
   library(fs)
   revbayes_script_files =
     dir_ls(here::here("analysis/paper/scripts")) %>%
-    str_subset("\\.Rev")
+    str_subset("\\.Rev") %>%
+    str_subset("004-00")
   output_data_files =
     dir_ls(here::here("analysis/data/derived_data")) %>%
     str_subset("output-0")
@@ -37,7 +42,7 @@ if_no_output_files_then_run_revbayes_scripts_fn <- function(){
         paste0("cd ",
                here::here(), # change to project working directory
                " && ",
-               "/Applications/revbayes-v1.2.1/bin/rb  ",
+               path_to_revbayes,
                file)
         )
     } else {
@@ -55,7 +60,7 @@ run_revbayes_script_001_fn <- function(revbayes_script_001_file,
   system(paste0("cd ",
                 here::here(), # change to project working directory
                 " && ",
-                "/Applications/revbayes-v1.2.1/bin/rb  ",
+                path_to_revbayes,
                 revbayes_script_001_file # this is the .Rev file path we set in _targets.R
                 ))
 }
@@ -66,7 +71,7 @@ run_revbayes_script_002_fn <- function(revbayes_script_002_file,
   system(paste0("cd ",
                 here::here(), # change to project working directory
                 " && ",
-                "/Applications/revbayes-v1.2.1/bin/rb  ",
+                path_to_revbayes,
                 revbayes_script_002_file # this is the .Rev file path we set in _targets.R
   ))
 }
@@ -77,7 +82,7 @@ run_revbayes_script_003_fn <- function(revbayes_script_003_file,
   system(paste0("cd ",
                 here::here(), # change to project working directory
                 " && ",
-                "/Applications/revbayes-v1.2.1/bin/rb  ",
+                path_to_revbayes,
                 revbayes_script_003_file # this is the .Rev file path we set in _targets.R
   ))
 }
@@ -88,7 +93,7 @@ run_revbayes_script_004_fn <- function(revbayes_script_004_file,
   system(paste0("cd ",
                 here::here(), # change to project working directory
                 " && ",
-                "/Applications/revbayes-v1.2.1/bin/rb  ",
+                path_to_revbayes,
                 revbayes_script_004_file # this is the .Rev file path we set in _targets.R
   ))
 }
@@ -99,7 +104,7 @@ run_revbayes_script_005_fn <- function(revbayes_script_005_file,
   system(paste0("cd ",
                 here::here(), # change to project working directory
                 " && ",
-                "/Applications/revbayes-v1.2.1/bin/rb  ",
+                path_to_revbayes,
                 revbayes_script_005_file # this is the .Rev file path we set in _targets.R
   ))
 }
