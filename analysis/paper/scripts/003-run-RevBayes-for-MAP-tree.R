@@ -8,9 +8,9 @@
 
 if_no_output_files_then_run_revbayes_scripts_fn <- function(){
 
-  path_to_revbayes <- "/home/rstudio/revbayes-v1.2.1/bin/rb  "
-  # above is in the Dockerfile
-  # my OSX is "/Applications/revbayes-v1.2.1/bin/rb  "
+  path_to_revbayes <-
+    "../revbayes-v1.2.1/bin/rb  "  #  is in the Dockerfile
+  # "/Applications/revbayes-v1.2.1/bin/rb  "  # is in my OSX
 
   # check to see what folders of output we have
   library(tidyverse)
