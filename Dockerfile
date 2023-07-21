@@ -6,6 +6,8 @@ COPY . /home/rstudio/bayesinfmatcultphylo
 RUN  . /etc/environment \
   # set permissions for read and write, we need this to write output files
   && sudo chmod -R 777 /home/ \
+  && apt-get update \
+  && apt-get install -y  imagemagick libmagickwand-dev --no-install-recommends \
   # install pkgs we need for the analysis
  && R -e "install.packages('remotes', repos = c(CRAN = 'https://cloud.r-project.org'))" \
  && R -e "remotes::install_github(c('rstudio/renv', 'quarto-dev/quarto-r'))" \
