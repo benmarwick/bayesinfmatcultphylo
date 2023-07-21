@@ -15,7 +15,7 @@ RUN  . /etc/environment \
 
 # notes on how to make this work:
 # step 1 ----------------------------------------------------------------
-# docker build -t test  -f 'Dockerfile-test' .
+# docker build -t test  -f 'Dockerfile' .
 # step 2 ----------------------------------------------------------------
 # docker run --rm -it -e ROOT=TRUE -e PASSWORD=rstudio -dp 8787:8787 test
 # step 3 clean up by stopping and deleting all containers ---------------
