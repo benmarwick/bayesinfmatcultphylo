@@ -1,4 +1,4 @@
-FROM rocker/geospatial:4.2.2
+FROM --platform=linux/x86_64 rocker/geospatial:4.2.2
 
 # copy our project into the directory that RStudio opens at
 COPY . /home/rstudio/bayesinfmatcultphylo
