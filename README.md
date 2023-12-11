@@ -66,18 +66,26 @@ Desktop](https://rstudio.com/products/rstudio/download/).
 
 You can download the compendium as a zip from from this URL:
 [master.zip](/archive/refs/heads/master.zip). After unzipping: - open
-the `.Rproj` file in RStudio - run `renv::restore` to ensure you have
-the packages this analysis depends on (also listed in the
-[DESCRIPTION](/DESCRIPTION) file). - to re-run the code that performs
-the data analysis and creates the visualisations, look in the `scripts`
-folder and run the R and Rev script files in order. The file names
-contain numbers that indicate the correct order. You will need to
-install [RevBayes](https://revbayes.github.io/) to run some of these
-files. - finally, open `analysis/paper/paper.qmd` and render to produce
+the `.Rproj` file in RStudio.  
+- run `renv::restore` to ensure you have the packages this analysis
+depends on (also listed in the [DESCRIPTION](/DESCRIPTION) file).  
+- to re-run the code that performs the data analysis and creates the
+visualisations, look in the `scripts` folder and run the R and Rev
+script files in order. The file names contain numbers that indicate the
+correct order (eg. 001, 002, etc.). You will need to install
+[RevBayes](https://revbayes.github.io/) to run some of these files.  
+- The data analysis took about 10 hours on my Macbook Pro 2.3 GHz Core
+i7 with 16 Gb RAM. The full output files were too large to commit to
+GitHub, and so are stored on [OSF](https://osf.io/rbqa5/). If you want
+to skip running the entire analysis, especially the time-consuming MCMC
+runs, you can find the analysis output at <https://osf.io/rbqa5/> in a
+folder called `revbayes-output`, and use that to run some of the later
+steps - finally, open `analysis/paper/paper.qmd` and render to produce
 the `paper.docx`, or run
 `quarto::quarto_render("analysis/paper/paper.qmd")` in the R console.
 Note that this file does not run any analysis code, it only combines the
-previously generated figures with the text of the manuscript.
+previously generated figures with the text of the manuscript to generate
+the manuscript.
 
 ### Licenses
 
