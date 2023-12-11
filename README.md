@@ -26,7 +26,7 @@ Our pre-print is online here:
 > [![](https://orcid.org/sites/default/files/images/orcid_16x16.png)](https://orcid.org/0000-0002-4879-7157),
 > (2023). *Bayesian inference of material culture phylogenies using
 > continuous traits from the archaeological record*. SocArXiv, Accessed
-> 17 Oct 2023. Online at <https://osf.io/preprints/socarxiv/j2kva>
+> 11 Dec 2023. Online at <https://osf.io/preprints/socarxiv/j2kva>
 
 ### How to cite
 
@@ -40,7 +40,7 @@ Please cite this compendium as:
 > [![](https://orcid.org/sites/default/files/images/orcid_16x16.png)](https://orcid.org/0000-0002-4879-7157),
 > (2023). *Compendium of R code and data for Bayesian inference of
 > material culture phylogenies using continuous traits from the
-> archaeological record*. Accessed 17 Oct 2023. Online at
+> archaeological record*. Accessed 11 Dec 2023. Online at
 > <https://doi.org/10.17605/OSF.IO/RBQA5>
 
 ## Contents
@@ -65,12 +65,19 @@ software](https://cloud.r-project.org/) itself and optionally [RStudio
 Desktop](https://rstudio.com/products/rstudio/download/).
 
 You can download the compendium as a zip from from this URL:
-[master.zip](/archive/master.zip). After unzipping: - open the `.Rproj`
-file in RStudio - run `renv::restore` to ensure you have the packages
-this analysis depends on (also listed in the [DESCRIPTION](/DESCRIPTION)
-file). - finally, open `analysis/paper/paper.qmd` and render to produce
+[master.zip](/archive/refs/heads/master.zip). After unzipping: - open
+the `.Rproj` file in RStudio - run `renv::restore` to ensure you have
+the packages this analysis depends on (also listed in the
+[DESCRIPTION](/DESCRIPTION) file). - to re-run the code that performs
+the data analysis and creates the visualisations, look in the `scripts`
+folder and run the R and Rev script files in order. The file names
+contain numbers that indicate the correct order. You will need to
+install [RevBayes](https://revbayes.github.io/) to run some of these
+files. - finally, open `analysis/paper/paper.qmd` and render to produce
 the `paper.docx`, or run
-`quarto::quarto_render("analysis/paper/paper.qmd")` in the R console
+`quarto::quarto_render("analysis/paper/paper.qmd")` in the R console.
+Note that this file does not run any analysis code, it only combines the
+previously generated figures with the text of the manuscript.
 
 ### Licenses
 
