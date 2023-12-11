@@ -65,8 +65,8 @@ software](https://cloud.r-project.org/) itself and optionally [RStudio
 Desktop](https://rstudio.com/products/rstudio/download/).
 
 You can download the compendium as a zip from from this URL:
-[master.zip](/archive/refs/heads/master.zip). After unzipping: - open
-the `.Rproj` file in RStudio.  
+[master.zip](/archive/master.zip). After unzipping: - open the `.Rproj`
+file in RStudio.  
 - run `renv::restore` to ensure you have the packages this analysis
 depends on (also listed in the [DESCRIPTION](/DESCRIPTION) file).  
 - to re-run the code that performs the data analysis and creates the
